@@ -40,7 +40,9 @@ export const fetchLoan = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const loan = await getLoan(userId);
-    console.log(loan);
+    if (!loan) {
+      res.status(400).json({ message: "No Loans" });
+    }
 
     return res.status(200).json({ loans: loan });
   } catch (error) {
