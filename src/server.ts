@@ -15,9 +15,14 @@ const app = express();
 //http://localhost:3000
 app.use(
   cors({
-    origin: "https://creditappsh.vercel.app",
+    origin: ["https://creditappsh.vercel.app", "http://localhost:3000"],
     credentials: true,
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Access-Control-Allow-Credentials",
+    ],
   })
 );
 app.use(express.json());
