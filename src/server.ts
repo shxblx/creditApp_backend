@@ -7,7 +7,6 @@ config();
 
 import connectDB from "./config/database";
 import userRouter from "./routes/userRoutes";
-import { userAuth } from "./middlewares/userAuth";
 
 connectDB();
 const app = express();
@@ -15,14 +14,9 @@ const app = express();
 //http://localhost:3000
 app.use(
   cors({
-    origin: ["https://creditappsh.vercel.app", "http://localhost:3000"],
+    origin: "https://creditappsh.vercel.app",
     credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Access-Control-Allow-Credentials",
-    ],
+    methods: ["GET", "POST"],
   })
 );
 app.use(express.json());
