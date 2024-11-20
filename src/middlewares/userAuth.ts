@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY as string;
-console.log(JWT_SECRET);
 
 interface JwtPayload {
   userId: string;
@@ -15,6 +14,7 @@ interface JwtPayload {
 export function userAuth(req: Request, res: Response, next: NextFunction) {
   try {
     const token = req.cookies.jwt;
+    console.log(req.cookies);
 
     if (!token) {
       return res
