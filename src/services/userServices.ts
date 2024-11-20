@@ -1,5 +1,9 @@
-import { ICheckUser, ICreateUser } from "../interface/userServiceInterface";
-import User, { IUser } from "../models/userModel";
+import {
+  ICheckUser,
+  ICreateLoan,
+  ICreateUser,
+} from "../interface/userServiceInterface";
+import User from "../models/userModel";
 
 export const checkUser: ICheckUser = async (email: string) => {
   try {

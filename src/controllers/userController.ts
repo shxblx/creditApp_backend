@@ -9,12 +9,12 @@ export const signup = async (req: Request, res: Response) => {
 
     const exist = await checkUser(email);
     if (exist) {
-      return res.status(400).json("User Already Exist");
+      return res.status(400).json({ message: "User Already Exist" });
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    await createUser(email, hashedPassword, username);
+    const user = await createUser(email, hashedPassword, username);
 
     const token = await generateToken({ userId: username, role: "user" });
 
@@ -25,7 +25,9 @@ export const signup = async (req: Request, res: Response) => {
       sameSite: "strict",
     });
 
-    return res.status(200).json("SignUp Success");
+    return res
+      .status(200)
+      .json({ userId: user?._id, message: "SignUp Success" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server Error" });
@@ -37,13 +39,14 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     const user = await checkUser(email);
+
     if (!user) {
-      return res.status(400).json("User Doesn't Exist");
+      return res.status(400).json({ message: "User Doesn't Exist" });
     }
     const passwordVerified = await bcrypt.compare(password, user.password);
 
     if (!passwordVerified) {
-      return res.status(400).json("Password Doesn't match");
+      return res.status(400).json({ message: "Password Doesn't match" });
     }
 
     if (user.isAdmin) {
@@ -71,10 +74,12 @@ export const login = async (req: Request, res: Response) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
     });
-    return res.status(200).json("Login Success");
+    return res
+      .status(200)
+      .json({ userId: user?._id, message: "Login Success" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json("Server Error");
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -87,10 +92,10 @@ export const logout = (req: Request, res: Response) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
     });
-    return res.status(200).json("Logout Success");
+    return res.status(200).json({ message: "Logout Success" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json("Server Error");
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 export const adminLogout = (req: Request, res: Response) => {
@@ -101,9 +106,9 @@ export const adminLogout = (req: Request, res: Response) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
     });
-    return res.status(200).json("Admin Logout Success");
+    return res.status(200).json({ message: "Admin Logout Success" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json("Server Error");
+    return res.status(500).json({ message: "Server Error" });
   }
 };
