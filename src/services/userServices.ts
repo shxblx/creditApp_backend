@@ -5,11 +5,11 @@ export const checkUser: ICheckUser = async (email: string) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return false;
+      return null;
     }
-    return true;
+    return user;
   } catch (error) {
-    return false;
+    return null;
   }
 };
 

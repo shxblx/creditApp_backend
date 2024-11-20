@@ -8,7 +8,7 @@ export interface ICustomer extends Document {
 }
 
 export interface ICheckUser {
-  (email: string): Promise<boolean>;
+  (email: string): Promise<IUser|null>;
 }
 
 export interface ICreateUser {
