@@ -11,8 +11,9 @@ import { userAuth } from "./middlewares/userAuth";
 
 connectDB();
 const app = express();
-
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+//https://creditappsh.vercel.app
+//http://localhost:3000
+app.use(cors({ origin: "https://creditappsh.vercel.app", credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
