@@ -11,9 +11,9 @@ interface JwtPayload {
   role: string;
 }
 
-export function userAuth(req: Request, res: Response, next: NextFunction) {
+export function adminAuth(req: Request, res: Response, next: NextFunction) {
   try {
-    const token = req.cookies.jwt;
+    const token = req.cookies.adminJwt;
 
     if (!token) {
       return res.status(401).json("Access Denied: No Token Provided");

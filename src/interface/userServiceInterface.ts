@@ -30,3 +30,10 @@ export interface ICreateLoan {
 export interface IGetLoan {
   (userId: string): Promise<ILoanModel[] | null>;
 }
+export interface IGetLoanAdmin {
+  (): Promise<ILoanModel[] | null>;
+}
+
+export interface IUpdateStatus {
+  (loanId: string, newStatus: string): Promise<ILoanModel | null>;
+}

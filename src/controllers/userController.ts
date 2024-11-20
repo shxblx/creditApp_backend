@@ -85,7 +85,6 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = (req: Request, res: Response) => {
   try {
-    console.log("here");
     res.cookie("jwt", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
