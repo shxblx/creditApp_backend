@@ -16,11 +16,12 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: ["https://creditappsh.vercel.app", "http://localhost:3000"],
-    credentials: true,
+    credentials: true, 
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Access-Control-Allow-Credentials"],
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -60,7 +60,7 @@ export const login = async (req: Request, res: Response) => {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        sameSite: "none",
+        sameSite: "lax",
       });
 
       return res.status(200).json({
@@ -74,7 +74,7 @@ export const login = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
+      sameSite: "lax",
     });
     return res
       .status(200)
