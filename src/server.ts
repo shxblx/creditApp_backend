@@ -12,6 +12,7 @@ connectDB();
 const app = express();
 //https://creditappsh.vercel.app
 //http://localhost:3000
+app.use(cookieParser());
 app.use(
   cors({
     origin: ["https://creditappsh.vercel.app", "http://localhost:3000"],
@@ -22,7 +23,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+
 app.use("/", userRouter);
 
 const port: string | number = process.env.PORT || 4040;
