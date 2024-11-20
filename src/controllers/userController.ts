@@ -20,9 +20,9 @@ export const signup = async (req: Request, res: Response) => {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
+      secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: "lax",
+      sameSite: "none",
     });
 
     return res
@@ -60,7 +60,7 @@ export const login = async (req: Request, res: Response) => {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        sameSite: "lax",
+        sameSite: "none",
       });
 
       return res.status(200).json({
@@ -74,7 +74,7 @@ export const login = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: "lax",
+      sameSite: "none",
     });
     return res
       .status(200)
@@ -89,7 +89,7 @@ export const logout = (req: Request, res: Response) => {
   try {
     res.cookie("jwt", "", {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
+      secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
     });
@@ -103,7 +103,7 @@ export const adminLogout = (req: Request, res: Response) => {
   try {
     res.cookie("adminJwt", "", {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
+      secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
     });
