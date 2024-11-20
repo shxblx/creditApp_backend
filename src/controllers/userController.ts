@@ -20,9 +20,9 @@ export const signup = async (req: Request, res: Response) => {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
+      secure: false,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: "strict",
+      sameSite: "lax",
     });
 
     return res

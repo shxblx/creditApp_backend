@@ -13,7 +13,13 @@ connectDB();
 const app = express();
 //https://creditappsh.vercel.app
 //http://localhost:3000
-app.use(cors({ origin: "https://creditappsh.vercel.app", credentials: true }));
+app.use(
+  cors({
+    origin: "https://creditappsh.vercel.app",
+    credentials: true,
+    methods: ["GET", "POST"],
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
