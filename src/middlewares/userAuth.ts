@@ -16,13 +16,15 @@ export function userAuth(req: Request, res: Response, next: NextFunction) {
     const token = req.cookies.jwt;
 
     if (!token) {
-      return res.status(401).json("Access Denied: No Token Provided");
+      return res
+        .status(401)
+        .json({ message: "Access Denied: No Token Provided" });
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
 
     next();
   } catch (error) {
-    return res.status(403).json("Invalid or Expired Token");
+    return res.status(403).json({ message: "Invalid or Expired Token" });
   }
 }
