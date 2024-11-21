@@ -28,7 +28,10 @@ export interface ICreateLoan {
   ): Promise<ILoanModel | null>;
 }
 export interface IGetLoan {
-  (userId: string): Promise<ILoanModel[] | null>;
+  (userId: string): Promise<{
+    loans: ILoanModel[];
+    totalDisbursed: number;
+  } | null>;
 }
 export interface IGetLoanAdmin {
   (): Promise<{

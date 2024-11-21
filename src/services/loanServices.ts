@@ -35,11 +35,20 @@ export const createLoan: ICreateLoan = async (
 
 export const getLoan: IGetLoan = async (userId: string) => {
   try {
-    const loan = await LoanModel.find({ userId });
-    if (!loan) {
+    const loans = await LoanModel.find({ userId });
+
+    if (!loans || loans.length === 0) {
       return null;
     }
-    return loan;
+
+    const totalDisbursed = loans
+      .filter((loan) => loan.loanStatus === "Disbursed")
+      .reduce((total, loan) => total + parseFloat(loan.loanAmount), 0);
+
+    return {
+      loans,
+      totalDisbursed,
+    };
   } catch (error) {
     return null;
   }

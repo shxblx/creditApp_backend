@@ -45,11 +45,15 @@ export const fetchLoan = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const loan = await getLoan(userId);
+    console.log(loan);
+
     if (!loan) {
       res.status(400).json({ message: "No Loans" });
     }
 
-    return res.status(200).json({ loans: loan });
+    return res
+      .status(200)
+      .json({ loans: loan?.loans, totalDisbursed: loan?.totalDisbursed });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server Error" });
