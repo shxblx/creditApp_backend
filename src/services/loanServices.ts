@@ -45,7 +45,7 @@ export const getLoan: IGetLoan = async (userId: string) => {
 };
 export const getLoanAdmin: IGetLoanAdmin = async () => {
   try {
-    const loan = await LoanModel.find();
+    const loan = await LoanModel.find().sort({ createdAt: -1 });
     if (!loan) {
       return null;
     }

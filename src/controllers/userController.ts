@@ -17,12 +17,12 @@ export const signup = async (req: Request, res: Response) => {
     const user = await createUser(email, hashedPassword, username);
 
     const token = await generateToken({ userId: username, role: "user" });
-
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("jwt", token, {
       httpOnly: true,
       secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
+      sameSite: isProduction ? "none" : "strict",
     });
 
     return res
@@ -56,11 +56,12 @@ export const login = async (req: Request, res: Response) => {
         userId: user.username,
         role: "admin",
       });
+      const isProduction = process.env.NODE_ENV === "production";
       res.cookie("adminJwt", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
+        secure: isProduction,
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        sameSite: "none",
+        sameSite: isProduction ? "none" : "strict",
       });
 
       return res.status(200).json({
@@ -70,11 +71,12 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const token = await generateToken({ userId: user.username, role: "user" });
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("jwt", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
+      secure: process.env.NODE_ENV === "production",
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
+      sameSite: isProduction ? "none" : "strict",
     });
     return res
       .status(200)
