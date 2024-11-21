@@ -14,6 +14,7 @@ interface JwtPayload {
 export function userAuth(req: Request, res: Response, next: NextFunction) {
   try {
     const token = req.cookies.jwt;
+    console.log(token);
 
     if (!token) {
       return res
