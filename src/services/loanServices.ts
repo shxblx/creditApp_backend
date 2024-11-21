@@ -5,6 +5,7 @@ import {
   IUpdateStatus,
 } from "../interface/userServiceInterface";
 import { LoanModel } from "../models/loanModel";
+import User from "../models/userModel";
 
 export const createLoan: ICreateLoan = async (
   userId: string,
@@ -45,12 +46,73 @@ export const getLoan: IGetLoan = async (userId: string) => {
 };
 export const getLoanAdmin: IGetLoanAdmin = async () => {
   try {
-    const loan = await LoanModel.find().sort({ createdAt: -1 });
-    if (!loan) {
-      return null;
-    }
-    return loan;
+    const [
+      loans,
+      loanStats,
+      pendingLoans,
+      rejectedLoans,
+      approvedLoans,
+      disbursedLoans,
+    ] = await Promise.all([
+      LoanModel.find().sort({ createdAt: -1 }),
+      LoanModel.aggregate([
+        {
+          $match: {
+            loanStatus: { $in: ["Disbursed", "disbursed"] },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalLoans: { $sum: 1 },
+            totalDisbursedAmount: {
+              $sum: {
+                $toDouble: {
+                  $replaceAll: {
+                    input: "$loanAmount",
+                    find: ",",
+                    replacement: "",
+                  },
+                },
+              },
+            },
+          },
+        },
+      ]),
+      LoanModel.countDocuments({
+        loanStatus: { $in: ["Pending", "pending"] },
+      }),
+      LoanModel.countDocuments({
+        loanStatus: { $in: ["Rejected", "rejected"] },
+      }),
+      LoanModel.countDocuments({
+        loanStatus: { $in: ["Approved", "approved"] },
+      }),
+      LoanModel.countDocuments({
+        loanStatus: { $in: ["Disbursed", "disbursed"] },
+      }),
+    ]);
+
+    const totalLoansCount = await LoanModel.countDocuments();
+    const totalUsers = await User.countDocuments();
+
+    const disbursedStats = loanStats[0] || {
+      totalLoans: 0,
+      totalDisbursedAmount: 0,
+    };
+
+    return {
+      loans,
+      totalLoans: totalLoansCount,
+      totalDisbursedAmount: disbursedStats.totalDisbursedAmount,
+      totalUsers,
+      pendingLoans,
+      rejectedLoans,
+      approvedLoans,
+      disbursedLoans,
+    };
   } catch (error) {
+    console.error("Error in getLoanAdmin:", error);
     return null;
   }
 };

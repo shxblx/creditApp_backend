@@ -31,7 +31,16 @@ export interface IGetLoan {
   (userId: string): Promise<ILoanModel[] | null>;
 }
 export interface IGetLoanAdmin {
-  (): Promise<ILoanModel[] | null>;
+  (): Promise<{
+    loans: ILoanModel[];
+    totalLoans: number;
+    totalDisbursedAmount: number;
+    totalUsers: number;
+    pendingLoans: number;
+    approvedLoans: number;
+    rejectedLoans: number;
+    disbursedLoans: number;
+  } | null>;
 }
 
 export interface IUpdateStatus {
